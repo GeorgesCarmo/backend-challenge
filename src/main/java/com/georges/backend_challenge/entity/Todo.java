@@ -36,10 +36,4 @@ public class Todo {
     @CreationTimestamp
     private LocalDateTime createdAt;
 
-    public void setName(String name) throws Exception {
-        if (name.length() > 50){
-            throw new Exception("O campo nome deve conter no máximo 50 caracteres!");
-        }
-        this.name = name;
-    }
 }

@@ -1,38 +1,48 @@
 package com.georges.backend_challenge.controller;
 
+import com.georges.backend_challenge.dto.TodoDTO;
+import com.georges.backend_challenge.dto.TodoResponseDTO;
 import com.georges.backend_challenge.entity.Todo;
 import com.georges.backend_challenge.service.TodoService;
+import org.apache.coyote.BadRequestException;
+import org.hibernate.grammars.hql.HqlParser;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/todos")
 public class TodoController {
 
-    private TodoService todoService;
+    private final TodoService todoService;
 
     public TodoController(TodoService todoService) {
         this.todoService = todoService;
     }
 
     @PostMapping
-    List<Todo> create(@RequestBody Todo todo) {
-        return todoService.crete(todo);
+    ResponseEntity<Object> create(@RequestBody TodoDTO todoDTO) {
+        return new ResponseEntity<>(todoService.crete(todoDTO), HttpStatus.CREATED);
     }
 
     @GetMapping
-    List<Todo> list(){
-        return todoService.list();
+    ResponseEntity<Page<Todo>> list(Pageable pageable){
+        return ResponseEntity.ok(todoService.list(pageable));
     }
 
-    @PutMapping
-    List<Todo> update(@RequestBody Todo todo) {
-        return todoService.update(todo);
+    @PutMapping("{id}")
+    ResponseEntity<Object> update(@RequestBody TodoResponseDTO responseDTO, @PathVariable Long id) throws BadRequestException {
+                return new ResponseEntity<>(todoService.update(responseDTO), HttpStatus.ACCEPTED);
     }
 
     @DeleteMapping("{id}")
-    List<Todo> delete(@PathVariable Long id){
-        return todoService.delete(id);
+    ResponseEntity<List<Todo>> delete(@PathVariable Long id){
+        return new ResponseEntity<>(todoService.delete(id), HttpStatus.OK);
     }
 }
