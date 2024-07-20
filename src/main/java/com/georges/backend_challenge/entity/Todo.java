@@ -1,6 +1,7 @@
 package com.georges.backend_challenge.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,9 +23,11 @@ public class Todo {
     private Long id;
 
     @Column(length = 50, nullable = false)
+    @NotBlank(message = "Campo obrigatório")
     private String name;
 
     @Column(nullable = false)
+    @NotBlank(message = "Campo obrigatório")
     private String description;
 
     @Column(nullable = false)
@@ -36,4 +39,10 @@ public class Todo {
     @CreationTimestamp
     private LocalDateTime createdAt;
 
+    public Todo(String name, String description, Boolean completed, String priority) {
+        this.name = name;
+        this.description = description;
+        this.completed = completed;
+        this.priority = priority;
+    }
 }
