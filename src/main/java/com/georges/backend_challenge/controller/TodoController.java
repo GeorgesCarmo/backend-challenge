@@ -4,17 +4,15 @@ import com.georges.backend_challenge.dto.TodoDTO;
 import com.georges.backend_challenge.dto.TodoResponseDTO;
 import com.georges.backend_challenge.entity.Todo;
 import com.georges.backend_challenge.service.TodoService;
+import jakarta.validation.Valid;
 import org.apache.coyote.BadRequestException;
-import org.hibernate.grammars.hql.HqlParser;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/todos")
@@ -27,7 +25,7 @@ public class TodoController {
     }
 
     @PostMapping
-    ResponseEntity<Object> create(@RequestBody TodoDTO todoDTO) {
+    ResponseEntity<Object> create(@RequestBody @Valid TodoDTO todoDTO) {
         return new ResponseEntity<>(todoService.crete(todoDTO), HttpStatus.CREATED);
     }
 
